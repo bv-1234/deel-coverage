@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deel Country Coverage & Hiring Preference</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: #f5f7fa; color: #222; font-size: 13px; }
+  h1 { text-align: center; padding: 18px 10px 4px; font-size: 20px; color: #1a1a2e; }
+  .subtitle { text-align: center; color: #666; font-size: 11px; padding-bottom: 10px; }
+  .blocked-banner { background: #fdecea; border: 1px solid #f5c6cb; border-radius: 8px; margin: 0 16px 12px; padding: 10px 14px; font-size: 11px; color: #721c24; }
+  .blocked-banner strong { display: block; margin-bottom: 4px; font-size: 12px; }
+  .blocked-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+  .blocked-tag { background: #f5c6cb; border-radius: 10px; padding: 2px 8px; font-size: 10px; font-weight: 600; }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; padding: 6px 16px 10px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #444; }
+  .dot { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; padding: 0 16px 10px; justify-content: center; align-items: center; }
+  .controls input[type="text"] { padding: 6px 10px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; width: 190px; }
+  .controls select { padding: 6px 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 12px; }
+  .controls label { font-size: 12px; color: #555; }
+  .table-wrap { overflow-x: auto; padding: 0 12px 24px; }
+  table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+  thead tr { background: #1a1a2e; color: #fff; }
+  thead th { padding: 10px 8px; text-align: left; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid #eee; transition: background 0.15s; }
+  tbody tr:hover { background: #f0f4ff; }
+  tbody td { padding: 8px 8px; vertical-align: middle; }
+  .badge { display: inline-block; border-radius: 12px; padding: 2px 9px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+  .badge-both { background: #d5f5e3; color: #1a7a3c; }
+  .badge-contractor { background: #d6eaf8; color: #1a5276; }
+  .badge-eor-only { background: #fdebd0; color: #784212; }
+  .pref { display: inline-block; border-radius: 12px; padding: 2px 10px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .pref-eor { background: #27ae60; color: #fff; }
+  .pref-either { background: #8e44ad; color: #fff; }
+  .pref-b2b { background: #2980b9; color: #fff; }
+  .cost { font-weight: 600; }
+  .cost-high { color: #c0392b; }
+  .cost-mid { color: #e67e22; }
+  .cost-low { color: #27ae60; }
+  .cost-note { font-size: 10px; color: #888; margin-top: 1px; }
+  .country-name { font-weight: 600; font-size: 12.5px; }
+  .tz { color: #777; font-size: 11px; }
+  .reasoning { font-size: 11px; color: #444; max-width: 240px; }
+  tfoot td { background: #f5f7fa; font-size: 10.5px; color: #666; padding: 10px 12px; border-top: 2px solid #ddd; line-height: 1.6; }
+  .count { text-align: center; font-size: 12px; color: #666; padding-bottom: 6px; }
+</style>
+</head>
+<body>
+<h1>🌍 Deel Country Coverage &amp; Hiring Preference</h1>
+<div class="subtitle">Verified against Deel's official help article &amp; Global Hiring Guide · March 2026<br>Employer costs based on statutory social security contributions 2025</div>
+<div class="blocked-banner">
+  <strong>🚫 Countries where Deel is NOT available (per official Deel help article):</strong>
+  <div class="blocked-tags">
+    <span class="blocked-tag">Afghanistan</span><span class="blocked-tag">Belarus</span><span class="blocked-tag">Cuba</span><span class="blocked-tag">Crimea (Ukraine)</span><span class="blocked-tag">Dem. Rep. of Congo</span><span class="blocked-tag">Donetsk PR (Ukraine)</span><span class="blocked-tag">Iran</span><span class="blocked-tag">Iraq</span><span class="blocked-tag">Kherson Oblast (Ukraine)</span><span class="blocked-tag">Libya</span><span class="blocked-tag">Luhansk PR (Ukraine)</span><span class="blocked-tag">Myanmar</span><span class="blocked-tag">North Korea</span><span class="blocked-tag">Russia</span><span class="blocked-tag">Somalia</span><span class="blocked-tag">South Sudan</span><span class="blocked-tag">Sudan</span><span class="blocked-tag">Syria</span><span class="blocked-tag">Venezuela</span><span class="blocked-tag">Yemen</span><span class="blocked-tag">Zaporizhzhia Oblast (Ukraine)</span>
+  </div>
+</div>
+<div class="legend">
+  <div class="legend-item"><span class="dot" style="background:#2980b9"></span> B2B / Contractor</div>
+  <div class="legend-item"><span class="dot" style="background:#8e44ad"></span> EOR or B2B</div>
+  <div class="legend-item"><span class="dot" style="background:#27ae60"></span> EOR Only</div>
+</div>
+<div class="controls">
+  <label>Search: <input type="text" id="search" placeholder="Country name..." oninput="filterTable()"></label>
+  <label>Coverage:
+    <select id="filterCoverage" onchange="filterTable()">
+      <option value="">All</option>
+      <option value="EOR and Contractors">EOR + Contractors</option>
+      <option value="Contractors only">Contractors Only</option>
+      <option value="EOR only">EOR Only</option>
+    </select>
+  </label>
+  <label>Preference:
+    <select id="filterPref" onchange="filterTable()">
+      <option value="">All</option>
+      <option value="EOR or B2B">EOR or B2B</option>
+      <option value="B2B / Contractor">B2B / Contractor</option>
+      <option value="EOR">EOR Only</option>
+    </select>
+  </label>
+</div>
+<div class="count" id="rowCount"></div>
+<div class="table-wrap">
+<table>
+<thead>
+  <tr><th>#</th><th>Country</th><th>Timezone</th><th>Deel Coverage (verified)</th><th>Employer SS Cost</th><th>Our Preference</th><th>Reasoning</th></tr>
+</thead>
+<tbody id="tableBody"></tbody>
+<tfoot>
+  <tr><td colspan="7">
+    <strong>Coverage source:</strong> Deel Help Article "Where Is Deel Available?" + Deel Global Hiring Guide, verified March 2026.<br>
+    <strong>Preference logic:</strong> B2B / Contractor where employer SS is high (&ge;~15%) or EOR is unavailable. EOR or B2B where SS is low (&lt;~15%) — both options are cost-viable. EOR-only countries follow Deel's restrictions.<br>
+    <strong>Special case:</strong> Malta — we operate via our own legal entity, EOR only through our own structure.
+  </td></tr>
+</tfoot>
+</table>
+</div>
+<script>
+const data = [
+  ["Albania","CET","EOR and Contractors","16.7%","Social insurance","B2B / Contractor","High SS (16.7%). B2B only to avoid employer costs."],
+  ["Algeria","CET","Contractors only","26%","Employer social contributions","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Armenia","CET +2","EOR and Contractors","3.5%","Fixed social payment","EOR or B2B","Very low SS (3.5%). Both EOR and B2B are viable."],
+  ["Austria","CET","EOR and Contractors","29.7%","Social security contributions","B2B / Contractor","High SS (29.7%). B2B only to avoid heavy employer costs."],
+  ["Azerbaijan","CET +2","EOR and Contractors","22%","Social insurance","B2B / Contractor","High SS (22%). B2B only to avoid employer levy."],
+  ["Bahrain","CET +1","EOR and Contractors","4%","GOSI (expats)","EOR or B2B","Very low SS (4%). Both EOR and B2B are viable."],
+  ["Belgium","CET","EOR and Contractors","27%","Basic employer SS","B2B / Contractor","High SS (27%). B2B only to avoid heavy employer contributions."],
+  ["Benin","CET","Contractors only","15.4%","CNSS employer contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Bhutan","CET +4","Contractors only","~10%","Provident fund","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Bosnia and Herzegovina","CET","EOR and Contractors","10.5%","Social contributions","EOR or B2B","Low SS (10.5%). Both EOR and B2B are viable."],
+  ["Brazil","CET -4","EOR and Contractors","~28%","INSS + FGTS + levies","B2B / Contractor","High SS (~28%) + complex CLT labour law. B2B only."],
+  ["Bulgaria","CET +1","EOR and Contractors","18.92%","Social security & health","B2B / Contractor","High SS (~19%). B2B only to reduce employer burden."],
+  ["Cameroon","CET","EOR and Contractors","17.7%","CNPS contributions","B2B / Contractor","High SS (17.7%). B2B only preferred."],
+  ["Cape Verde","CET +3","Contractors only","~15%","INPS employer contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Croatia","CET","EOR and Contractors","16.5%","Health insurance + pension","B2B / Contractor","High SS (16.5%). B2B only to avoid employer costs."],
+  ["Cyprus","CET +1","EOR and Contractors","8.8%","Social insurance + levies","EOR or B2B","Low SS (8.8%). Both EOR and B2B are viable."],
+  ["Czech Republic","CET","EOR and Contractors","33.8%","Social + health insurance","B2B / Contractor","High SS (33.8%). B2B only to avoid very heavy costs."],
+  ["Denmark","CET","EOR and Contractors","~1%","ATP + occupational (minimal)","EOR or B2B","Negligible SS (~1%). Both EOR and B2B are viable."],
+  ["Egypt","CET +1","EOR and Contractors","18.75%","Social insurance","B2B / Contractor","High SS (~19%). B2B only to reduce employer burden."],
+  ["Estonia","CET +1","EOR and Contractors","33%","Social tax (pension + health)","B2B / Contractor","High SS (33%). B2B only to avoid heavy employer levy."],
+  ["Ethiopia","CET +1","EOR only","11%","Social security","EOR","EOR only — no contractor option via Deel."],
+  ["Finland","CET +1","EOR and Contractors","20.65%","Pension, unemployment, health","B2B / Contractor","High SS (20.65%). B2B only to avoid high employer costs."],
+  ["France","CET","EOR and Contractors","45%","Total employer contributions","B2B / Contractor","Highest SS in Europe (45%). B2B only to avoid massive employer costs."],
+  ["Gabon","CET","Contractors only","20%","CNSS employer contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Georgia","CET +2","EOR and Contractors","0%","No employer SS","EOR or B2B","Zero SS. Both EOR and B2B are viable."],
+  ["Germany","CET","EOR and Contractors","20.65%","Pension, health, unemployment, care","B2B / Contractor","High SS (~20.65%). B2B only to avoid employer contributions."],
+  ["Ghana","CET -2","EOR and Contractors","13%","SSNIT employer contribution","EOR or B2B","Moderate SS (13%). Both EOR and B2B are viable."],
+  ["Gibraltar","CET","Contractors only","20%","Employer social insurance","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Greece","CET +1","EOR and Contractors","22.79%","IKA social security","B2B / Contractor","High SS (~23%). B2B only to avoid employer burden."],
+  ["Greenland","CET -1","Contractors only","~10%","ATP + employer levies","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Hungary","CET","EOR and Contractors","13%","Social tax","EOR or B2B","Low SS (13%). Both EOR and B2B are viable."],
+  ["Iceland","CET -1","EOR and Contractors","6.35%","Pension fund contribution","EOR or B2B","Very low SS (6.35%). Both EOR and B2B are viable."],
+  ["Ireland","CET -1","EOR and Contractors","11.15%","PRSI employer contribution","EOR or B2B","Low SS (11.15%). Both EOR and B2B are viable."],
+  ["Israel","CET +1","EOR and Contractors","~6%","National insurance + health","EOR or B2B","Low SS (~6%). Both EOR and B2B are viable."],
+  ["Italy","CET","EOR and Contractors","39%","INPS total employer contribution","B2B / Contractor","Very high SS (39%). B2B only to avoid massive employer costs."],
+  ["Ivory Coast","CET -1","EOR and Contractors","18.2%","CNPS contributions","B2B / Contractor","High SS (18.2%). B2B only preferred."],
+  ["Jordan","CET +1","EOR and Contractors","14.25%","Social security","EOR or B2B","Moderate SS (14.25%). Both EOR and B2B are viable."],
+  ["Kazakhstan","CET +3","EOR and Contractors","13.5%","Social contributions + pension","EOR or B2B","Moderate SS (13.5%). Both EOR and B2B are viable."],
+  ["Kenya","CET +1","EOR and Contractors","~5%","NSSF + NHIF contributions","EOR or B2B","Very low SS (~5%). Both EOR and B2B are viable."],
+  ["Kosovo","CET","EOR and Contractors","5%","Pension employer contribution","EOR or B2B","Very low SS (5%). Both EOR and B2B are viable."],
+  ["Kuwait","CET +1","EOR and Contractors","11%","PIFSS (expats)","EOR or B2B","Low SS (11%) for expat hires. Both EOR and B2B are viable."],
+  ["Kyrgyzstan","CET +4","Contractors only","15%","Social fund contributions","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Latvia","CET +1","EOR and Contractors","23.59%","Social insurance","B2B / Contractor","High SS (~23.6%). B2B only to avoid employer levy."],
+  ["Lebanon","CET +1","Contractors only","23.5%","NSSF employer contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Lesotho","CET","Contractors only","~10%","Pension contributions","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Liechtenstein","CET","Contractors only","~8%","AHV/IV/EO employer contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Lithuania","CET +1","EOR and Contractors","1.77%","Social insurance (employer portion very low)","EOR or B2B","Extremely low SS (1.77%). Both EOR and B2B are viable."],
+  ["Luxembourg","CET","EOR and Contractors","15%","Social security employer share","B2B / Contractor","High SS (15%). B2B only to manage costs."],
+  ["Madagascar","CET +1","EOR and Contractors","13%","CNaPS employer contribution","EOR or B2B","Moderate SS (13%). Both EOR and B2B are viable."],
+  ["Malawi","CET","Contractors only","10%","Pension (employer portion)","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Malta","CET","EOR and Contractors","10%","Social security","EOR","We have a legal entity in Malta."],
+  ["Mauritania","CET -2","Contractors only","14%","CNSS employer contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Mauritius","CET +2","EOR and Contractors","6%","NPF + NSF contributions","EOR or B2B","Very low SS (6%). Both EOR and B2B are viable."],
+  ["Moldova","CET +1","EOR only","18%","Social security","EOR","EOR only — no contractor option via Deel."],
+  ["Monaco","CET","Contractors only","28%","Social security employer contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Montenegro","CET","EOR and Contractors","10.3%","Social contributions","EOR or B2B","Low SS (10.3%). Both EOR and B2B are viable."],
+  ["Morocco","CET","EOR and Contractors","21.09%","CNSS + AMO contributions","B2B / Contractor","High SS (~21%). B2B only to avoid employer costs."],
+  ["Mozambique","CET","EOR and Contractors","4%","INSS employer contribution","EOR or B2B","Very low SS (4%). Both EOR and B2B are viable."],
+  ["Namibia","CET +1","EOR and Contractors","~1%","SDL + minimal SS","EOR or B2B","Negligible SS (~1%). Both EOR and B2B are viable."],
+  ["Nepal","CET +4","Contractors only","10%","Provident fund contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Netherlands","CET","EOR and Contractors","27.65%","ZVW + WAO/WIA + pension","B2B / Contractor","High SS (27.65%). B2B only to avoid heavy employer costs."],
+  ["Nigeria","CET","EOR and Contractors","10%","NSITF + pension contributions","EOR or B2B","Low SS (10%). Both EOR and B2B are viable."],
+  ["North Macedonia","CET","EOR and Contractors","27.9%","Social contributions","B2B / Contractor","High SS (~28%). B2B only to avoid employer burden."],
+  ["Norway","CET","EOR and Contractors","14.1%","Employer national insurance","EOR or B2B","Moderate SS (14.1%). Both EOR and B2B are viable."],
+  ["Oman","CET +2","Contractors only","~11.5%","PASI (expats may be exempt)","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Pakistan","CET +3","EOR and Contractors","5%","EOBI + SESSI contributions","EOR or B2B","Very low SS (5%). Both EOR and B2B are viable."],
+  ["Poland","CET","EOR and Contractors","22.14%","ZUS social insurance","B2B / Contractor","High SS (~22%). B2B only to avoid employer costs."],
+  ["Portugal","CET -1","EOR and Contractors","23.75%","Social security TSU","B2B / Contractor","High SS (23.75%). B2B only to avoid heavy employer contributions."],
+  ["Qatar","CET +1","Contractors only","~0%","No SS for expats typically","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Reunion","CET +2","Contractors only","~28%","Aligned with French SS rates","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Romania","CET +1","EOR and Contractors","2.25%","Work insurance levy","EOR or B2B","Exceptionally low SS (2.25%). Both EOR and B2B are viable."],
+  ["Rwanda","CET","EOR and Contractors","3%","Pension (Maternity fund)","EOR or B2B","Very low SS (3%). Both EOR and B2B are viable."],
+  ["San Marino","CET","Contractors only","~19%","Social security contributions","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Saudi Arabia","CET +1","EOR and Contractors","~2%","GOSI (expats exempt from most)","EOR or B2B","Very low SS (~2%) for expats. Both EOR and B2B are viable."],
+  ["Senegal","CET -1","EOR only","16%","CSS employer contributions","EOR","EOR only — no contractor option via Deel."],
+  ["Serbia","CET","EOR and Contractors","16.15%","Social contributions","B2B / Contractor","High SS (16.15%). B2B only to manage costs."],
+  ["Seychelles","CET +2","Contractors only","3%","CSE employer contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Sierra Leone","CET -2","Contractors only","10%","NASSIT contributions","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Slovakia","CET","EOR and Contractors","35.2%","Social + health insurance","B2B / Contractor","Very high SS (35.2%). B2B only to avoid very heavy costs."],
+  ["Slovenia","CET","EOR and Contractors","16.1%","Social contributions","B2B / Contractor","High SS (16.1%). B2B only preferred."],
+  ["South Africa","CET +1","EOR and Contractors","~2%","UIF + SDL contributions","EOR or B2B","Very low SS (~2%). Both EOR and B2B are viable."],
+  ["Spain","CET","EOR and Contractors","30.57%","Social security","B2B / Contractor","High SS (30.57%). B2B only to avoid heavy employer costs."],
+  ["Sri Lanka","CET +4","EOR and Contractors","12%","EPF + ETF employer contribution","EOR or B2B","Low SS (12%). Both EOR and B2B are viable."],
+  ["Swaziland","CET","Contractors only","5%","SNPF employer contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Sweden","CET","EOR and Contractors","31.42%","Employer social contributions","B2B / Contractor","High SS (31.42%). B2B only to avoid heavy employer costs."],
+  ["Switzerland","CET","EOR and Contractors","6.4%","AHV/IV/EO + accident ins.","EOR or B2B","Low SS (6.4%). Both EOR and B2B are viable."],
+  ["Tajikistan","CET +3","Contractors only","25%","Social insurance","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Tunisia","CET","EOR and Contractors","16.57%","CNSS employer contribution","B2B / Contractor","High SS (16.57%). B2B only preferred."],
+  ["Turkey","CET +1","EOR and Contractors","22.5%","Social security + unemployment","B2B / Contractor","High SS (22.5%). B2B only to avoid employer costs."],
+  ["Uganda","CET +1","EOR and Contractors","10%","NSSF employer contribution","EOR or B2B","Low SS (10%). Both EOR and B2B are viable."],
+  ["Ukraine","CET +1","EOR and Contractors","22%","Unified social contribution","B2B / Contractor","High SS (22%). B2B only. Note: occupied regions blocked by Deel."],
+  ["United Arab Emirates","CET +2","EOR and Contractors","~0%","No SS for expats","EOR or B2B","Zero SS for expats. Both EOR and B2B are viable."],
+  ["United Kingdom","CET -1","EOR and Contractors","15%","Employer NI (from Apr 2025)","B2B / Contractor","High SS (15%). B2B only; also avoids IR35 risk."],
+  ["Uzbekistan","CET +3","EOR and Contractors","12%","Social tax","EOR or B2B","Low SS (12%). Both EOR and B2B are viable."],
+  ["Zambia","CET","EOR and Contractors","5%","NAPSA + NHIMA contributions","EOR or B2B","Very low SS (5%). Both EOR and B2B are viable."],
+];
+function getCovBadgeClass(c){if(c==="EOR and Contractors")return"badge-both";if(c==="Contractors only")return"badge-contractor";if(c==="EOR only")return"badge-eor-only";return"";}
+function getPrefClass(p){if(p==="EOR or B2B")return"pref-either";if(p==="B2B / Contractor")return"pref-b2b";if(p==="EOR")return"pref-eor";return"";}
+function getCostClass(ss){const n=parseFloat(ss);if(isNaN(n))return"";if(n>=20)return"cost-high";if(n>=10)return"cost-mid";return"cost-low";}
+function renderTable(rows){
+  const tbody=document.getElementById("tableBody");tbody.innerHTML="";
+  rows.forEach((r,i)=>{
+    const[country,tz,cov,ss,ssNote,pref,reasoning]=r;
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${i+1}</td><td><div class="country-name">${country}</div></td><td><span class="tz">${tz}</span></td><td><span class="badge ${getCovBadgeClass(cov)}">${cov}</span></td><td><div class="cost ${getCostClass(ss)}">${ss}</div><div class="cost-note">${ssNote}</div></td><td><span class="pref ${getPrefClass(pref)}">${pref}</span></td><td class="reasoning">${reasoning}</td>`;
+    tbody.appendChild(tr);
+  });
+  document.getElementById("rowCount").textContent=`Showing ${rows.length} of ${data.length} countries`;
+}
+function filterTable(){
+  const s=document.getElementById("search").value.toLowerCase();
+  const cov=document.getElementById("filterCoverage").value;
+  const pref=document.getElementById("filterPref").value;
+  const filtered=data.filter(r=>{
+    if(s&&!r[0].toLowerCase().includes(s))return false;
+    if(cov&&r[2]!==cov)return false;
+    if(pref&&r[5]!==pref)return false;
+    return true;
+  });
+  renderTable(filtered);
+}
+renderTable(data);
+</script>
+</body>
+</html>
