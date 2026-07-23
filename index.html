@@ -49,7 +49,7 @@
 </head>
 <body>
 <h1>🌍 Deel Country Coverage &amp; Hiring Preference</h1>
-<div class="subtitle">Verified against Deel's official help article &amp; Global Hiring Guide · April 2026<br>Employer costs based on statutory social security contributions 2025</div>
+<div class="subtitle">Verified against Deel's official help article &amp; Global Hiring Guide · July 2026<br>Employer costs based on statutory social security contributions 2025</div>
 <div class="blocked-banner">
   <strong>🚫 Countries where Deel is NOT available (per official Deel help article):</strong>
   <div class="blocked-tags">
@@ -89,7 +89,7 @@
 <tbody id="tableBody"></tbody>
 <tfoot>
   <tr><td colspan="7">
-    <strong>Coverage source:</strong> Deel Help Article "Where Is Deel Available?" + Deel Global Hiring Guide, verified March 2026.<br>
+    <strong>Coverage source:</strong> Deel Help Article "Where Is Deel Available?" + Deel Global Hiring Guide, verified July 2026 — added Equatorial Guinea, Gambia, Martinique, Nauru, and Puerto Rico after cross-checking against Deel's full Global Hiring Guide list.<br>
     <strong>Preference logic:</strong> B2B / Contractor where employer SS is high (&ge;~15%) or EOR is unavailable. EOR or B2B where SS is low (&lt;~15%) — both options are cost-viable. EOR-only countries follow Deel's restrictions.<br>
     <strong>Special case:</strong> Malta — we operate via our own legal entity, EOR only through our own structure.
   </td></tr>
@@ -146,12 +146,14 @@ const data = [
   ["Ecuador","ECT (CET -6)","EOR and Contractors","~12.15%","IESS employer contribution","EOR or B2B","Low SS (~12%). Both EOR and B2B are viable."],
   ["Egypt","CET +1","EOR and Contractors","18.75%","Social insurance","B2B / Contractor","High SS (~19%). B2B only to reduce employer burden."],
   ["El Salvador","CST -6","EOR and Contractors","~7.5%","ISSS + AFP contributions","EOR or B2B","Low SS (~7.5%). Both EOR and B2B are viable."],
+  ["Equatorial Guinea","CET","EOR and Contractors","~22.5%","INSESO (21.5%) + Work Protection Fund (1%)","B2B / Contractor","High SS (~22.5%). B2B only to avoid heavy employer costs."],
   ["Estonia","CET +1","EOR and Contractors","33%","Social tax (pension + health)","B2B / Contractor","High SS (33%). B2B only to avoid heavy employer levy."],
   ["Ethiopia","CET +1","EOR only","11%","Social security","EOR","EOR only — no contractor option via Deel."],
   ["Fiji","FJT (CET +11)","EOR and Contractors","~10%","FNPF employer contribution","EOR or B2B","Low SS (~10%). Both EOR and B2B are viable."],
   ["Finland","CET +1","EOR and Contractors","20.65%","Pension, unemployment, health","B2B / Contractor","High SS (20.65%). B2B only to avoid high employer costs."],
   ["France","CET","EOR and Contractors","45%","Total employer contributions","B2B / Contractor","Highest SS in Europe (45%). B2B only to avoid massive employer costs."],
   ["Gabon","CET","Contractors only","20%","CNSS employer contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Gambia","GMT","EOR and Contractors","~0%","No mandatory employer payroll tax (SSHFC mainly employee-side)","EOR or B2B","Negligible employer SS. Both EOR and B2B are viable."],
   ["Georgia","CET +2","EOR and Contractors","0%","No employer SS","EOR or B2B","Zero SS. Both EOR and B2B are viable."],
   ["Germany","CET","EOR and Contractors","20.65%","Pension, health, unemployment, care","B2B / Contractor","High SS (~20.65%). B2B only to avoid employer contributions."],
   ["Ghana","CET -2","EOR and Contractors","13%","SSNIT employer contribution","EOR or B2B","Moderate SS (13%). Both EOR and B2B are viable."],
@@ -197,6 +199,7 @@ const data = [
   ["Mali","GMT","EOR and Contractors","~17.8%","INPS employer contribution","B2B / Contractor","High SS (~18%). B2B only preferred."],
   ["Malta","CET","EOR and Contractors","10%","Social security","EOR","We have a legal entity in Malta."],
   ["Marshall Islands","MHT (CET +11)","Contractors only","~7%","Social security employer contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
+  ["Martinique","EST -4","Contractors only","~28%","Aligned with French SS rates","B2B / Contractor","Contractors only via Deel. No EOR available."],
   ["Mauritania","CET -2","Contractors only","14%","CNSS employer contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
   ["Mauritius","CET +2","EOR and Contractors","6%","NPF + NSF contributions","EOR or B2B","Very low SS (6%). Both EOR and B2B are viable."],
   ["Mexico","CST -6","EOR and Contractors","~30%","IMSS + INFONAVIT + employer taxes","B2B / Contractor","High SS (~30%). B2B only to avoid employer burden."],
@@ -207,6 +210,7 @@ const data = [
   ["Morocco","CET","EOR and Contractors","21.09%","CNSS + AMO contributions","B2B / Contractor","High SS (~21%). B2B only to avoid employer costs."],
   ["Mozambique","CET","EOR and Contractors","4%","INSS employer contribution","EOR or B2B","Very low SS (4%). Both EOR and B2B are viable."],
   ["Namibia","CET +1","EOR and Contractors","~1%","SDL + minimal SS","EOR or B2B","Negligible SS (~1%). Both EOR and B2B are viable."],
+  ["Nauru","NRT (CET +11)","Contractors only","0%","No formal statutory SS system","B2B / Contractor","Contractors only via Deel. No EOR available."],
   ["Nepal","CET +4","Contractors only","10%","Provident fund contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
   ["Netherlands","CET","EOR and Contractors","27.65%","ZVW + WAO/WIA + pension","B2B / Contractor","High SS (27.65%). B2B only to avoid heavy employer costs."],
   ["New Zealand","NZST (CET +12)","EOR and Contractors","~0.67%","ACC employer levy (minimal)","EOR or B2B","Negligible SS (~0.67%). Both EOR and B2B are viable."],
@@ -225,6 +229,7 @@ const data = [
   ["Philippines","PHT (CET +7)","EOR and Contractors","~11.5%","SSS + PhilHealth + Pag-IBIG","EOR or B2B","Low SS (~11.5%). Both EOR and B2B are viable."],
   ["Poland","CET","EOR and Contractors","22.14%","ZUS social insurance","B2B / Contractor","High SS (~22%). B2B only to avoid employer costs."],
   ["Portugal","CET -1","EOR and Contractors","23.75%","Social security TSU","B2B / Contractor","High SS (23.75%). B2B only to avoid heavy employer contributions."],
+  ["Puerto Rico","EST -4","EOR and Contractors","~7.65%","FICA (Social Security + Medicare)","EOR or B2B","Moderate SS (~7.65%), same as US federal rate. Both EOR and B2B are viable."],
   ["Qatar","CET +1","Contractors only","~0%","No SS for expats typically","B2B / Contractor","Contractors only via Deel. No EOR available."],
   ["Reunion","CET +2","Contractors only","~28%","Aligned with French SS rates","B2B / Contractor","Contractors only via Deel. No EOR available."],
   ["Romania","CET +1","EOR and Contractors","2.25%","Work insurance levy","EOR or B2B","Exceptionally low SS (2.25%). Both EOR and B2B are viable."],
