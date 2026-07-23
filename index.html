@@ -45,6 +45,28 @@
   .reasoning { font-size: 11px; color: #444; max-width: 240px; }
   tfoot td { background: #f5f7fa; font-size: 10.5px; color: #666; padding: 10px 12px; border-top: 2px solid #ddd; line-height: 1.6; }
   .count { text-align: center; font-size: 12px; color: #666; padding-bottom: 6px; }
+
+  @media (prefers-color-scheme: dark) {
+    body { background: #16121a; color: #ece6ea; }
+    h1 { color: #ece6ea; }
+    .subtitle { color: #b3a9b3; }
+    .blocked-banner { background: #3a2422; border-color: #5a3230; color: #e28a87; }
+    .blocked-tag { background: #4a2a28; color: #f0a8a5; }
+    .legend-item { color: #b3a9b3; }
+    .controls input[type="text"], .controls select { background: #241c29; border-color: #443a4c; color: #ece6ea; }
+    .controls label { color: #b3a9b3; }
+    table { background: #1e1822; box-shadow: 0 2px 12px rgba(0,0,0,0.5); }
+    thead tr { background: #241c29; }
+    tbody tr { border-bottom-color: #332c39; }
+    tbody tr:hover { background: #2a2230; }
+    tbody td { color: #ece6ea; }
+    .country-name { color: #ece6ea; }
+    .tz { color: #948d93; }
+    .reasoning { color: #cfc9d1; }
+    .cost-note { color: #948d93; }
+    tfoot td { background: #1e1822; color: #b3a9b3; border-top-color: #332c39; }
+    .count { color: #b3a9b3; }
+  }
 </style>
 </head>
 <body>
