@@ -71,7 +71,7 @@
 </head>
 <body>
 <h1>🌍 Deel Country Coverage &amp; Hiring Preference</h1>
-<div class="subtitle">Verified against Deel's official help article &amp; Global Hiring Guide · July 2026<br>Employer costs based on statutory social security contributions 2025</div>
+<div class="subtitle"><strong>Last verified: July 24, 2026</strong> — against Deel's official help article &amp; Global Hiring Guide<br>Employer costs based on statutory social security contributions 2025</div>
 <div class="blocked-banner">
   <strong>🚫 Countries where Deel is NOT available (per official Deel help article):</strong>
   <div class="blocked-tags">
@@ -101,12 +101,24 @@
       <option value="EOR">EOR Only</option>
     </select>
   </label>
+  <label>Region:
+    <select id="filterRegion" onchange="filterTable()">
+      <option value="">All</option>
+      <option value="Africa">Africa</option>
+      <option value="Asia">Asia</option>
+      <option value="Europe">Europe</option>
+      <option value="Latin America & Caribbean">Latin America & Caribbean</option>
+      <option value="Middle East">Middle East</option>
+      <option value="North America">North America</option>
+      <option value="Oceania">Oceania</option>
+    </select>
+  </label>
 </div>
 <div class="count" id="rowCount"></div>
 <div class="table-wrap">
 <table>
 <thead>
-  <tr><th>#</th><th>Country</th><th>Timezone</th><th>Deel Coverage (verified)</th><th>Employer SS Cost</th><th>Our Preference</th><th>Reasoning</th></tr>
+  <tr><th>#</th><th>Country</th><th>Region</th><th>Timezone</th><th>Deel Coverage (verified)</th><th>Employer SS Cost</th><th>Our Preference</th><th>Reasoning</th></tr>
 </thead>
 <tbody id="tableBody"></tbody>
 <tfoot>
@@ -279,6 +291,7 @@ const data = [
   ["Vietnam","CET +6","EOR and Contractors","~17%","BHXH + BHYT + BHTN employer contributions","B2B / Contractor","High SS (~17%). B2B only to manage employer costs."],
   ["Zambia","CET +1","EOR and Contractors","5%","NAPSA + NHIMA contributions","EOR or B2B","Very low SS (5%). Both EOR and B2B are viable."],
 ];
+const REGION={"Albania":"Europe", "Algeria":"Africa", "Antarctica":"Other", "Antigua and Barbuda":"Latin America & Caribbean", "Argentina":"Latin America & Caribbean", "Armenia":"Europe", "Australia":"Oceania", "Austria":"Europe", "Azerbaijan":"Europe", "Bahamas":"Latin America & Caribbean", "Bahrain":"Middle East", "Bangladesh":"Asia", "Barbados":"Latin America & Caribbean", "Belgium":"Europe", "Belize":"Latin America & Caribbean", "Benin":"Africa", "Bermuda":"Latin America & Caribbean", "Bhutan":"Asia", "Bolivia":"Latin America & Caribbean", "Bosnia and Herzegovina":"Europe", "Brazil":"Latin America & Caribbean", "Bulgaria":"Europe", "Cambodia":"Asia", "Cameroon":"Africa", "Canada":"North America", "Cape Verde":"Africa", "Cayman Islands":"Latin America & Caribbean", "Chad":"Africa", "Chile":"Latin America & Caribbean", "China":"Asia", "Colombia":"Latin America & Caribbean", "Costa Rica":"Latin America & Caribbean", "Croatia":"Europe", "Cyprus":"Europe", "Czech Republic":"Europe", "Denmark":"Europe", "Dominican Republic":"Latin America & Caribbean", "Ecuador":"Latin America & Caribbean", "Egypt":"Africa", "El Salvador":"Latin America & Caribbean", "Equatorial Guinea":"Africa", "Estonia":"Europe", "Ethiopia":"Africa", "Fiji":"Oceania", "Finland":"Europe", "France":"Europe", "Gabon":"Africa", "Gambia":"Africa", "Georgia":"Europe", "Germany":"Europe", "Ghana":"Africa", "Gibraltar":"Europe", "Greece":"Europe", "Greenland":"Europe", "Grenada":"Latin America & Caribbean", "Guatemala":"Latin America & Caribbean", "Guyana":"Latin America & Caribbean", "Haiti":"Latin America & Caribbean", "Honduras":"Latin America & Caribbean", "Hong Kong":"Asia", "Hungary":"Europe", "Iceland":"Europe", "India":"Asia", "Indonesia":"Asia", "Ireland":"Europe", "Israel":"Middle East", "Italy":"Europe", "Ivory Coast":"Africa", "Jamaica":"Latin America & Caribbean", "Japan":"Asia", "Jordan":"Middle East", "Kazakhstan":"Asia", "Kenya":"Africa", "Kosovo":"Europe", "Kuwait":"Middle East", "Kyrgyzstan":"Asia", "Latvia":"Europe", "Lebanon":"Middle East", "Lesotho":"Africa", "Liechtenstein":"Europe", "Lithuania":"Europe", "Luxembourg":"Europe", "Macau":"Asia", "Madagascar":"Africa", "Malawi":"Africa", "Malaysia":"Asia", "Mali":"Africa", "Malta":"Europe", "Martinique":"Latin America & Caribbean", "Mauritania":"Africa", "Mauritius":"Africa", "Mexico":"Latin America & Caribbean", "Moldova":"Europe", "Monaco":"Europe", "Mongolia":"Asia", "Montenegro":"Europe", "Morocco":"Africa", "Mozambique":"Africa", "Namibia":"Africa", "Nauru":"Oceania", "Nepal":"Asia", "Netherlands":"Europe", "New Zealand":"Oceania", "Nicaragua":"Latin America & Caribbean", "Niger":"Africa", "Nigeria":"Africa", "North Macedonia":"Europe", "Norway":"Europe", "Oman":"Middle East", "Pakistan":"Asia", "Panama":"Latin America & Caribbean", "Paraguay":"Latin America & Caribbean", "Peru":"Latin America & Caribbean", "Philippines":"Asia", "Poland":"Europe", "Portugal":"Europe", "Puerto Rico":"Latin America & Caribbean", "Qatar":"Middle East", "Reunion":"Africa", "Romania":"Europe", "Rwanda":"Africa", "Saint Lucia":"Latin America & Caribbean", "Saint Vincent and the Grenadines":"Latin America & Caribbean", "San Marino":"Europe", "Saudi Arabia":"Middle East", "Senegal":"Africa", "Serbia":"Europe", "Seychelles":"Africa", "Sierra Leone":"Africa", "Singapore":"Asia", "Slovakia":"Europe", "Slovenia":"Europe", "South Africa":"Africa", "South Korea":"Asia", "Spain":"Europe", "Sri Lanka":"Asia", "Suriname":"Latin America & Caribbean", "Swaziland":"Africa", "Sweden":"Europe", "Switzerland":"Europe", "Taiwan":"Asia", "Tajikistan":"Asia", "Tanzania":"Africa", "Thailand":"Asia", "Timor-Leste":"Asia", "Togo":"Africa", "Trinidad and Tobago":"Latin America & Caribbean", "Tunisia":"Africa", "Turkey":"Europe", "Uganda":"Africa", "Ukraine":"Europe", "United Arab Emirates":"Middle East", "United Kingdom":"Europe", "United States":"North America", "Uruguay":"Latin America & Caribbean", "Uzbekistan":"Asia", "Vietnam":"Asia", "Zambia":"Africa"};
 function getCovBadgeClass(c){if(c==="EOR and Contractors")return"badge-both";if(c==="Contractors only")return"badge-contractor";if(c==="EOR only")return"badge-eor-only";return"";}
 function getPrefClass(p){if(p==="EOR or B2B")return"pref-either";if(p==="B2B / Contractor")return"pref-b2b";if(p==="EOR")return"pref-eor";return"";}
 function getCostClass(ss){const n=parseFloat(ss);if(isNaN(n))return"";if(n>=20)return"cost-high";if(n>=10)return"cost-mid";return"cost-low";}
@@ -286,8 +299,9 @@ function renderTable(rows){
   const tbody=document.getElementById("tableBody");tbody.innerHTML="";
   rows.forEach((r,i)=>{
     const[country,tz,cov,ss,ssNote,pref,reasoning]=r;
+    const region=REGION[country]||"Other";
     const tr=document.createElement("tr");
-    tr.innerHTML=`<td>${i+1}</td><td><div class="country-name">${country}</div></td><td><span class="tz">${tz}</span></td><td><span class="badge ${getCovBadgeClass(cov)}">${cov}</span></td><td><div class="cost ${getCostClass(ss)}">${ss}</div><div class="cost-note">${ssNote}</div></td><td><span class="pref ${getPrefClass(pref)}">${pref}</span></td><td class="reasoning">${reasoning}</td>`;
+    tr.innerHTML=`<td>${i+1}</td><td><div class="country-name">${country}</div></td><td><span class="tz">${region}</span></td><td><span class="tz">${tz}</span></td><td><span class="badge ${getCovBadgeClass(cov)}">${cov}</span></td><td><div class="cost ${getCostClass(ss)}">${ss}</div><div class="cost-note">${ssNote}</div></td><td><span class="pref ${getPrefClass(pref)}">${pref}</span></td><td class="reasoning">${reasoning}</td>`;
     tbody.appendChild(tr);
   });
   document.getElementById("rowCount").textContent=`Showing ${rows.length} of ${data.length} countries`;
@@ -296,10 +310,12 @@ function filterTable(){
   const s=document.getElementById("search").value.toLowerCase();
   const cov=document.getElementById("filterCoverage").value;
   const pref=document.getElementById("filterPref").value;
+  const region=document.getElementById("filterRegion").value;
   const filtered=data.filter(r=>{
     if(s&&!r[0].toLowerCase().includes(s))return false;
     if(cov&&r[2]!==cov)return false;
     if(pref&&r[5]!==pref)return false;
+    if(region&&(REGION[r[0]]||"Other")!==region)return false;
     return true;
   });
   renderTable(filtered);
