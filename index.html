@@ -111,7 +111,7 @@
 <tbody id="tableBody"></tbody>
 <tfoot>
   <tr><td colspan="7">
-    <strong>Coverage source:</strong> Verified against help.letsdeel.com's official "Where Is Deel Available?" article (the not-available list above) and deel.com/hiring's per-country hiring-guide data (cross-checked via sitemap.xml), July 2026. 6 countries corrected where a live Deel guide page confirmed wider coverage than we listed (Czech Republic, Bosnia and Herzegovina, North Macedonia, United Kingdom — plus the earlier 22-country pass). Venezuela was removed from the blocked list (Deel's official list no longer includes it) and added below as a regular row, though unconfirmed — see note. For 34 smaller/lower-volume markets, Deel has no dedicated guide page in either direction, so coverage type could not be independently confirmed from these two sources — check manually before hiring there: <strong>Algeria, Monaco, Zimbabwe</strong> (current EOR claim is the least certain — Deel's own data leans against EOR for these three); <strong>Angola, Botswana, Burkina Faso, Chad, Equatorial Guinea, Gambia, Mali, Niger, Sierra Leone, Tanzania, Togo</strong> (EOR claim has weak supporting signal, probably fine); <strong>Aruba, British Virgin Islands, Brunei, Djibouti, Dominica, Guinea, Laos, Liberia, Maldives, Marshall Islands, Palau, Papua New Guinea, Saint Kitts and Nevis, Samoa, Sint Maarten, Solomon Islands, Turkmenistan, Turks and Caicos Islands, Vanuatu, Venezuela</strong> (no data from either source at all — for Venezuela specifically, also weigh sanctions exposure before hiring).<br>
+    <strong>Coverage source:</strong> Verified against help.letsdeel.com's official "Where Is Deel Available?" article (the not-available list above) and deel.com/hiring's per-country hiring-guide data (cross-checked via sitemap.xml), July 2026. 7 countries corrected where a live Deel guide page confirmed wider coverage than we listed (Czech Republic, Bosnia and Herzegovina, North Macedonia, United Kingdom, Sierra Leone — plus the earlier 22-country pass). Per direct confirmation from our TA team: Algeria and Monaco are B2B/Contractor only (no EOR); Angola, Botswana, Burkina Faso, and Zimbabwe are not available via Deel at all and have been removed from this table. For 21 smaller/lower-volume markets, Deel still has no dedicated guide page in either direction even after re-checking multiple URL variants, so coverage type could not be independently confirmed from these two sources — check manually before hiring there: <strong>Chad, Equatorial Guinea, Gambia, Mali, Niger, Tanzania, Togo</strong> (EOR claim has weak supporting signal from Deel's own data, probably fine); <strong>Aruba, British Virgin Islands, Brunei, Djibouti, Dominica, Guinea, Laos, Liberia, Maldives, Marshall Islands, Palau, Papua New Guinea, Saint Kitts and Nevis, Samoa, Sint Maarten, Solomon Islands, Turkmenistan, Turks and Caicos Islands, Vanuatu, Venezuela</strong> (no data from either source at all — for Venezuela specifically, also weigh sanctions exposure before hiring).<br>
     <strong>Timezones:</strong> recomputed for all countries as an offset from CET (standard time, no DST), using each country's real UTC offset — not just reformatted from the previous ad-hoc labels, several of which had errors.<br>
     <strong>Preference logic:</strong> B2B / Contractor where employer SS is high (&ge;~15%) or EOR is unavailable. EOR or B2B where SS is low (&lt;~15%) — both options are cost-viable. EOR-only countries follow Deel's restrictions.<br>
     <strong>Special case:</strong> Malta — we operate via our own legal entity, EOR only through our own structure.
@@ -122,8 +122,7 @@
 <script>
 const data = [
   ["Albania","CET","EOR and Contractors","16.7%","Social insurance","B2B / Contractor","High SS (16.7%). B2B only to avoid employer costs."],
-    ["Algeria","CET","EOR and Contractors","26%","Employer social contributions","B2B / Contractor","High SS (26%). B2B only to avoid employer costs."],
-  ["Angola","CET","EOR and Contractors","8%","INSS employer contribution","EOR or B2B","Low SS (8%). Both EOR and B2B are viable."],
+    ["Algeria","CET","Contractors only","26%","Employer social contributions","B2B / Contractor","Contractors only via Deel — no EOR available."],
   ["Antarctica","CET -1","Contractors only","0%","No statutory SS","B2B / Contractor","Contractors only via Deel. No EOR available."],
   ["Antigua and Barbuda","CET -5","Contractors only","~9%","Social security contributions","B2B / Contractor","Contractors only via Deel. No EOR available."],
   ["Argentina","CET -4","EOR and Contractors","~27%","Social security + pension","B2B / Contractor","High SS (~27%). B2B only to manage employer costs."],
@@ -143,12 +142,10 @@ const data = [
   ["Bhutan","CET +5","Contractors only","~10%","Provident fund","B2B / Contractor","Contractors only via Deel. No EOR available."],
   ["Bolivia","CET -5","EOR and Contractors","~18%","AFP pension + labour contributions","B2B / Contractor","High SS (~18%). B2B only preferred."],
     ["Bosnia and Herzegovina","CET","EOR and Contractors","10.5%","Social contributions","B2B / Contractor","Moderate SS (10.5%). B2B preferred, though EOR is available via Deel if needed."],
-  ["Botswana","CET +1","EOR and Contractors","~3%","BPOPF pension contributions","EOR or B2B","Very low SS (~3%). Both EOR and B2B are viable."],
   ["Brazil","CET -4","EOR and Contractors","~28%","INSS + FGTS + levies","B2B / Contractor","High SS (~28%) + complex CLT labour law. B2B only."],
   ["British Virgin Islands","CET -5","Contractors only","~4.5%","Social Security Board","B2B / Contractor","Contractors only via Deel. No EOR available."],
   ["Brunei","CET +7","EOR and Contractors","~5%","TAP + SCP employer contributions","EOR or B2B","Very low SS (~5%). Both EOR and B2B are viable."],
   ["Bulgaria","CET +1","EOR and Contractors","18.92%","Social security & health","B2B / Contractor","High SS (~19%). B2B only to reduce employer burden."],
-  ["Burkina Faso","CET -1","EOR and Contractors","16%","CNSS employer contribution","B2B / Contractor","High SS (16%). B2B only preferred."],
   ["Cambodia","CET +6","EOR and Contractors","~0.8%","NSSF employer contribution","EOR or B2B","Negligible SS (~0.8%). Both EOR and B2B are viable."],
   ["Cameroon","CET","EOR and Contractors","17.7%","CNPS contributions","B2B / Contractor","High SS (17.7%). B2B only preferred."],
   ["Canada","CET -6 to CET -9","EOR and Contractors","~12%","CPP + EI employer contributions","EOR or B2B","Moderate SS (~12%). Both EOR and B2B are viable."],
@@ -227,7 +224,7 @@ const data = [
   ["Mauritius","CET +3","EOR and Contractors","6%","NPF + NSF contributions","EOR or B2B","Very low SS (6%). Both EOR and B2B are viable."],
   ["Mexico","CET -7","EOR and Contractors","~30%","IMSS + INFONAVIT + employer taxes","B2B / Contractor","High SS (~30%). B2B only to avoid employer burden."],
   ["Moldova","CET +1","EOR only","18%","Social security","EOR","EOR only — no contractor option via Deel."],
-    ["Monaco","CET","EOR and Contractors","28%","Social security employer contribution","B2B / Contractor","High SS (28%). B2B only to avoid employer costs."],
+    ["Monaco","CET","Contractors only","28%","Social security employer contribution","B2B / Contractor","Contractors only via Deel — no EOR available."],
   ["Mongolia","CET +7","EOR and Contractors","~11.5%","Social insurance employer contribution","EOR or B2B","Low SS (~11.5%). Both EOR and B2B are viable."],
   ["Montenegro","CET","EOR and Contractors","10.3%","Social contributions","EOR or B2B","Low SS (10.3%). Both EOR and B2B are viable."],
   ["Morocco","CET","EOR and Contractors","21.09%","CNSS + AMO contributions","B2B / Contractor","High SS (~21%). B2B only to avoid employer costs."],
@@ -266,7 +263,7 @@ const data = [
   ["Senegal","CET -1","EOR only","16%","CSS employer contributions","EOR","EOR only — no contractor option via Deel."],
   ["Serbia","CET","EOR and Contractors","16.15%","Social contributions","B2B / Contractor","High SS (16.15%). B2B only to manage costs."],
   ["Seychelles","CET +3","Contractors only","3%","CSE employer contribution","B2B / Contractor","Contractors only via Deel. No EOR available."],
-    ["Sierra Leone","CET -1","EOR and Contractors","10%","NASSIT contributions","EOR or B2B","Low SS (10%). Both EOR and B2B are viable."],
+    ["Sierra Leone","CET -1","Contractors only","10%","NASSIT contributions","B2B / Contractor","Contractors only via Deel — no EOR available."],
   ["Singapore","CET +7","EOR and Contractors","~17%","CPF employer contribution","B2B / Contractor","High SS (17% CPF). B2B only to manage employer costs."],
   ["Sint Maarten","CET -5","Contractors only","~11%","Social insurance contributions","B2B / Contractor","Contractors only via Deel. No EOR available."],
   ["Slovakia","CET","EOR and Contractors","35.2%","Social + health insurance","B2B / Contractor","Very high SS (35.2%). B2B only to avoid very heavy costs."],
@@ -302,7 +299,6 @@ const data = [
   ["Venezuela","CET -5","Contractors only","~11%","IVSS + labour contributions (estimated — economy highly unstable)","B2B / Contractor","No live Deel guide page for EOR or Contractors — not on Deel's official blocked list, but sanctions exposure and economic instability make formal EOR unlikely. Verify directly with Deel before hiring."],
   ["Vietnam","CET +6","EOR and Contractors","~17%","BHXH + BHYT + BHTN employer contributions","B2B / Contractor","High SS (~17%). B2B only to manage employer costs."],
   ["Zambia","CET +1","EOR and Contractors","5%","NAPSA + NHIMA contributions","EOR or B2B","Very low SS (5%). Both EOR and B2B are viable."],
-  ["Zimbabwe","CET +1","EOR and Contractors","~5%","NSSA employer contribution","EOR or B2B","Very low SS (~5%). Both EOR and B2B are viable."],
 ];
 function getCovBadgeClass(c){if(c==="EOR and Contractors")return"badge-both";if(c==="Contractors only")return"badge-contractor";if(c==="EOR only")return"badge-eor-only";return"";}
 function getPrefClass(p){if(p==="EOR or B2B")return"pref-either";if(p==="B2B / Contractor")return"pref-b2b";if(p==="EOR")return"pref-eor";return"";}
